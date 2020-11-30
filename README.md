@@ -18,8 +18,14 @@ In this project, we provide a statistical analyses of the data using Apache Spar
 ### Start Zookeeper and Kafka Server
 
 ```bash
-bin/zookeeper-server-start.sh config/zookeeper.properties
-bin/kafka-server-start.sh config/server.properties
+zookeeper-server-start.sh config/zookeeper.properties
+kafka-server-start.sh config/server.properties
+```
+
+### Create Kafka Topic
+
+```bash
+kafka-topics.sh --create --topic com.udacity.crime.police-event --zookeeper localhost:2181 --partitions 1 --replication-factor 1
 ```
 
 ### Run Kafka Producer server
@@ -28,15 +34,22 @@ bin/kafka-server-start.sh config/server.properties
 python kafka_server.py
 ```
 
-### Run the kafka Consumer server
+### Viewing messages
 
 ```bash
 python kafka_consumer.py
 ```
 
+or you can to use Kafka tool for that
+
+```bash
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic com.udacity.crime.police-event --from-beginning
+```
+
 ### Submit Spark Streaming Job
 
 ```bash
+spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.4.4 --master local[*] data_stream.py
 spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.3.4 --master local[*] data_stream.py
 ```
 
